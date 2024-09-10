@@ -20,14 +20,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
-//import com.google.samples.apps.iosched.util.quoteSsidAndPassword
-//import com.google.samples.apps.iosched.util.unquoteSsidAndPassword
-//import javax.inject.Inject
 
 /**
  * Installs WiFi on device given a WiFi configuration.
  */
-class WifiInstaller constructor(
+class WifiInstaller(
     private val wifiManager: WifiManager,
     private val clipboardManager: ClipboardManager
 ) {

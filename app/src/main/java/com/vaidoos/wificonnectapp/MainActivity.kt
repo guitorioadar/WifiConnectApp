@@ -2,6 +2,7 @@ package com.vaidoos.wificonnectapp
 
 import android.Manifest
 import android.content.BroadcastReceiver
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -10,7 +11,6 @@ import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.NetworkRequest
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
@@ -31,13 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
-import com.thanosfisherman.wifiutils.WifiUtils
-import com.thanosfisherman.wifiutils.wifiConnect.ConnectionErrorCode
-import com.thanosfisherman.wifiutils.wifiConnect.ConnectionSuccessListener
 import com.vaidoos.wificonnectapp.ui.theme.WifiConnectAppTheme
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 
 
 class MainActivity : ComponentActivity() {
@@ -69,9 +63,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             WifiConnectAppTheme {
                 // Main Content
+                val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+                val clipboardManager = applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val wifiInstaller = WifiInstaller(wifiManager, clipboardManager)
                 MainScreen(onConnectClick = {
 //                    connectToWifi(ssid, password)
-                    connectToWifiGoogleIO(ssid, password)
+                    connectToWifiGoogleIO(wifiInstaller)
 //                    addWifiNetworkSuggestions()
                 })
             }
@@ -81,8 +78,13 @@ class MainActivity : ComponentActivity() {
         registerPostConnectionReceiver()
     }
 
-    private fun connectToWifiGoogleIO(ssid: String, password: String) {
-        TODO("Implement Wifi Connect")
+    private fun connectToWifiGoogleIO(wifiInstaller: WifiInstaller?) {
+        wifiInstaller?.installConferenceWifi(
+            WifiConfiguration().apply {
+                SSID = ssid
+                preSharedKey = password
+            }
+        )
     }
 
     private fun registerPostConnectionReceiver() {
