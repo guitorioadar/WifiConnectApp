@@ -40,11 +40,11 @@ class MainActivity : ComponentActivity() {
     private val TAG = "MainActivity"
 
 
-//    private val ssid = "Sweet Home"   // Replace with your SSID
-//    private val password = "kichu#ekta@daw"  // Replace with your WiFi password
+    private val ssid = "Sweet Home"   // Replace with your SSID
+    private val password = "kichu#ekta@daw"  // Replace with your WiFi password
 
-    private val ssid = "Audra"   // Replace with your SSID
-    private val password = "1234567890"  // Replace with your WiFi password
+//    private val ssid = "Audra"   // Replace with your SSID
+//    private val password = "1234567890"  // Replace with your WiFi password
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +79,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun connectToWifiGoogleIO(wifiInstaller: WifiInstaller?) {
+        Log.d(TAG, "connectToWifiGoogleIO: ")
         wifiInstaller?.installConferenceWifi(
             WifiConfiguration().apply {
                 SSID = ssid
@@ -138,7 +139,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
+        permissions: Array<String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
